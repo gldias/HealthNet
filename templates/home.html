@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "homepage" %}">Home</a></li>
+    <li><a href="{% url "login" %}">Login</a></li>
+    <li><a href="{% url "pat_register" %}">Register</a></li>
+</ul>
+<div class='spacer'><font color='white'> a</font></div>
+<div class="spacer"><font color='white'> a</font></div>
+</body>
+</html>

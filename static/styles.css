@@ -1,0 +1,191 @@
+/*Navbar Code*/
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+    color: black;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #3a87ad;
+}
+
+/*End Navbar*/
+
+/*Sidebar*/
+#menu li{
+    width: 100%;
+}
+/*End Sidebar*/
+.spacer{
+    width: 33%;
+
+}
+
+div.username{
+    width: 33%;
+}
+
+div.password{
+    width: 33%;
+}
+
+.logout{
+    float: right;
+}
+
+.update{
+    float: right;
+}
+
+#login{
+    border-radius: 5px;
+    float:left;
+    width: 33%;
+    margin-top: 0.5%;
+    border: solid black;
+}
+
+#menu {
+    float: left;
+	width: 20%;
+	height: 100%;
+    background-color: #333;
+}
+
+.main{
+    padding-top: 25px;
+    padding-left: 2%;
+	float: right;
+	width: 78%;
+    max-width: 90%;
+    alignment: center;
+}
+
+#calendar{
+    padding-left: 25px;
+    padding-bottom: 25px;
+}
+
+.errorlist{
+    color: red;
+    background-color: white;
+}
+
+/*Tabs Code*/
+
+.tabs {
+    position: relative;
+    min-height: 450px;
+    max-height: 100%;
+    display: block;
+    margin: 1em auto 0;
+    width: 80%;
+}
+
+.tab {
+  float: left;
+
+}
+
+.tab label {
+    cursor: pointer;
+    background: #3a87ad;
+    font-size: 1.2em;
+    border-radius: 5px 5px 0 0;
+    padding: .5em 1em;
+}
+
+.tab [type=radio] {
+    position: absolute;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+.content {
+    background: #333333;
+    border: 1px solid #3a87ad;
+    color: white;
+    border-radius: 0 5px 5px;
+    padding: .5em 2em;
+    max-width: 100%;
+    position: absolute;
+    top: 2em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+}
+
+[type=radio]:checked ~ label {
+    z-index: 2;
+    background: #3e46d2;
+}
+
+[type=radio]:checked ~ label ~ .content {
+    z-index: 1;
+    opacity: 1;
+}
+
+body {
+  font-family: monospace;
+}
+
+/*Lightbox Code*/
+.thumbnail {
+  max-width: 100px;
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .8);
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 80%;
+    margin-top: 2%;
+}
+
+.lightbox:target {
+    outline: none;
+    display: block;
+}
+
+.presc{
+    float: left;
+    width: 100%
+}
+
+.delete{
+    float: right;
+    width: 10%
+}
+
+.delete:hover{
+    background-color: red;
+}

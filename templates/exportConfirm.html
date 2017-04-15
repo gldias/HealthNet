@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Welcome to HealthNet</title>
+
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+        <li class='update'><a href="{% url 'updatePatient' %}">{{ "Update Info" }}</a></li>
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <h1>Welcome to HealthNet, {{ user.username }}</h1>
+    <div id='calendar' class='main'></div>
+{% else %}
+    <h1>Welcome to HealthNet </h1>
+{% endif %}
+{% if user.is_authenticated %}
+    <h2>
+        There may be confidential or sensitive information in this export!
+    </h2>
+    <p>
+        Are you sure you wish to continue? <a href="{% url 'export_information' %}">Confirm</a>
+    </p>
+
+
+{% else %}
+    <a href="{% url 'pat_register' %}">{{ "Register Here" }}</a>
+{% endif %}
+</body>
+</html>

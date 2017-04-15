@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<!--SHOULD THIS BE RENAMED PATIENT DASHBOARD?-->
+
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script>
+        $(document).ready(function () {
+            // page is now ready, initialize the calendar...
+            $('#calendar').fullCalendar({
+                // put your options and callbacks here
+                editable: 'true',
+                clickable: 'true',
+                eventLimit: 'true',
+                events: '{%  url "feed" %}'
+            })
+        });
+    </script>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    <li><a href="{% url "login" %}">Login</a></li>
+    <li><a href="{% url "register" %}">Register</a></li>
+    <li><a href="{% url "cal" %}">Calendar</a></li>
+</ul>
+<div id='menu'>
+    <br>
+    <a href="{% url 'cal' %}">Calendar</a> <br/>
+    <a href='{% url 'presc' %}'>Prescriptions</a><br/>
+    <a href='{% url 'hist' %}'>Medical History</a><br/>
+    <a href='{% url 'newAppt' %}'>Create Appointment</a><br/>
+</div>
+<div id='calendar' class='main'></div>
+</body>
+</html>

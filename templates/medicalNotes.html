@@ -1,0 +1,38 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <title>HealthNet</title>
+</head>
+
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+</ul>
+</br>
+{% if complete %}
+    <strong>Notes entered!</strong>
+    <a href="/healthNet/doctor/">Return to the homepage.</a><br/>
+{% else %}
+    <strong>Enter patient notes:</strong><br/>
+
+    <br/>
+    <br/>
+
+    <form id="medical_notes_form" method="post" action="/healthNet/newNote/">
+        {% csrf_token %}
+        <!-- Display each form. The as_p method wraps each element in a paragraph
+             (<p>) element. This ensures each element appears on a new line,
+             making everything look neater. -->
+
+        {{ medical_notes_form.as_p }}
+
+
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="Save and Submit"/>
+    </form>
+{% endif %}
+</body>
+
+</html>

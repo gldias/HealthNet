@@ -1,0 +1,118 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <title>HealthNet</title>
+</head>
+
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+</ul>
+</br>
+<strong>Enter patient notes:</strong><br/>
+
+<br/>
+<br/>
+
+<form id="medical_notes_form" method="post" action="/healthNet/newNotes/">
+    {% csrf_token %}
+    <!-- Display each form. The as_p method wraps each element in a paragraph
+         (<p>) element. This ensures each element appears on a new line,
+         making everything look neater. -->
+
+    {% regroup medical_notes_form.fields by group as field_group %}
+    {% for group in field_group %}
+        <div class="group_{{ group.grouper }}">
+            <br/>
+            {% for field in group.list %}
+                {% if field.group == 1 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="checkbox" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 2 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 3 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 4 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 5 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 6 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 7 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 8 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 9 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 10 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 11 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 12 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% elif field.group == 13 %}
+                    <div>
+                        <label for={{ field }}>{{ field }}</label>
+                        <input id={{ field }} type="text" name={{ field }} value="">
+                    </div>
+                    <br/>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <!-- Provide a button to click to submit the form. -->
+    <input type="submit" name="submit" value="Save and Submit"/>
+</form>
+</body>
+
+</html>

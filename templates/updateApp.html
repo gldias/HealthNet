@@ -1,0 +1,50 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <title>HealthNet</title>
+
+
+</head>
+
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    <li><a href="{% url "login" %}">Login</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+        <li class='update'><a href="{% url 'updatePatient' %}">{{ "Update Info" }}</a></li>
+    {% endif %}
+</ul>
+<br/>
+
+{% if successful %}
+    <strong>Updated appointment successfully. Click the Home button to return to the home page.</strong>
+
+{% else %}
+    <strong>Update your appointment information for {{ user.username }} here:</strong><br/>
+
+    <form id="appointment_form" method="post" action="{% url 'updateApp' appointment.id %}">
+
+        {% csrf_token %}
+
+        <!-- Display each form. The as_p method wraps each element in a paragraph
+             (<p>) element. This ensures each element appears on a new line,
+             making everything look neater. -->
+        {{ update_appForm.as_p }}
+
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="Update"/>
+    </form>
+
+    <form action="{% url 'delApp' appointment.id %}">
+        <input type="submit" value="Delete Appointment"/>
+    </form>
+
+
+{% endif %}
+
+</body>
+
+</html>

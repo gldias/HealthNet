@@ -1,0 +1,40 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <title>HealthNet</title>
+</head>
+
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+</ul>
+
+<div id='main'>
+    {% if request_accepted %}
+        <strong>Transfer Complete</strong>
+        {% if is_doctor %}
+            <a href="{% url 'index' %}">Return to the homepage.</a><br/>
+        {% elif is_admin %}
+            <a href="{% url 'index' %}">Return to the homepage.</a><br/>
+        {% endif %}
+    {% else %}
+
+        <form id="user_form" method="post" action="/healthNet/acceptTransfer/">
+
+            {% csrf_token %}
+
+            <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+            {{ accept_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Accept Patient Transfer"/>
+        </form>
+    {% endif %}
+</div>
+</body>
+
+</html>

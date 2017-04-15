@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Welcome to HealthNet</title>
+
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    <li><a href="{% url "login" %}">Login</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <div id='menu'>
+        <ul>
+            <li><a href="{% url 'messages_inbox' %} ">Inbox</a></li>
+            <li><a href="{% url 'messages_outbox' %} ">Sent Messages</a></li>
+            <li><a href="{% url 'messages_compose' %} ">New Message</a></li>
+            <li><a href="{% url 'messages_trash' %} ">Trash</a></li>
+            <li><a href="{% url 'index' %}">Calendar</a> <br/></li>
+            <li><a href='{% url 'addPresc' %}'>Patient Prescriptions</a><br/></li>
+            <li><a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/></li>
+            <li><a href='{% url 'testUploader' %}'>Upload Test Results</a><br/></li>
+            <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+            <li><a href='{% url 'notes' %}'>Add Medical Notes</a><br/></li>
+            <li><a href='{% url 'viewNotes' %}'>View Medical Notes</a><br/></li>
+            <li><a href='{% url 'admit_patient' %}'>Admit Patient</a><br/></li>
+            <li><a href='{% url 'discharge_patient' %}'>Discharge Patient</a><br/></li>
+            <li><a href='{% url 'requestTransfer' %}'>Request Patient Transfer</a><br/></li>
+            <li><a href='{% url 'acceptTransfer' %}'>Accept Pending Transfers</a><br/></li>
+        </ul>
+    </div>
+{% else %}
+    <h1>Welcome to HealthNet!</h1>
+{% endif %}
+
+{% if not complete %}
+    <div>
+        <form id="medical_notes_patient_select_form" method="post" action="/healthNet/viewNotes/">
+            {% csrf_token %}
+            Which patient would you like to see notes for?
+            {{ medical_notes_patient_select_form.as_p }}
+            <input type="submit" name="submit" value="Select"/>
+        </form>
+    </div>
+{% else %}
+    <div>
+        {% for note in patient_notes %}
+            <li><a href='/healthNet/viewNote/{{ note.id }}'>{{ note }}</a></li>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if user.is_authenticated %}
+
+{% else %}
+    <li>
+        <a href="{% url 'register' %}">{{ "Register Here" }}</a>
+    </li>
+{% endif %}
+</body>
+</html>

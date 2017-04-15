@@ -1,0 +1,46 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <title>HealthNet</title>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+        {% if not is_doctor and not is_assist and not is_admin %}
+            <li class='update'><a href="{% url 'updatePatient' %}">{{ "Update Info" }}</a></li>
+        {% endif %}
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <!--<h1>Welcome to HealthNet, {{ user.username }}</h1>-->
+{% endif %}
+
+<div>
+{% if appointment_created %}
+    <strong> Appointment Created. Click the Home button to return to the home page.</strong>
+{% else %}
+    <strong>Create Appointment!</strong><br/>
+
+    <form id="appointment_form" method="post" action="{% url 'newAppt' %}">
+
+        {% csrf_token %}
+
+        <!-- Display each form. The as_p method wraps each element in a paragraph
+             (<p>) element. This ensures each element appears on a new line,
+             making everything look neater. -->
+        {{ appointment_form.as_p }}
+
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="create"/>
+    </form>
+{% endif %}
+</div>
+</body>
+
+</html>

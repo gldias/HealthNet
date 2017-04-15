@@ -1,0 +1,39 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css"%}"/>
+    <title>HealthNet</title>
+</head>
+
+<body>
+  <image src = "{% static "/static/header.jpg"%}" width = 100% height = auto></image>
+  <ul>
+    <li><a href="{% url "homepage" %}">Home</a></li>
+    <li><a href="{% url "login" %}">Login</a></li>
+  </ul>
+    <br/>
+
+    {% if registered %}
+        <strong>Thank you for registering. Click the Login button to login.</strong>
+    {% else %}
+        <strong>Register here</strong><br />
+
+        <form id="user_form" method="post" action="{% url 'pat_register' %}">
+
+            {% csrf_token %}
+
+            <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+            {{ user_form.as_p }}
+            {{ patient_form.as_p }}
+            {{ contact_info_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Register" />
+        </form>
+    {% endif %}
+
+</body>
+
+</html>

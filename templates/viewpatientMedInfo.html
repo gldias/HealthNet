@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Welcome to HealthNet</title>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+        {% if not is_doctor and not is_assist and not is_admin %}
+            <li class='update'><a href="{% url 'updatePatient' %}">{{ "Update Info" }}</a></li>
+        {% endif %}
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <!--<h1>Welcome to HealthNet, {{ user.username }}</h1>-->
+    <div id='menu'>
+        {% if is_doctor %}
+            <ul>
+                <li><a href="{% url 'messages_inbox' %} ">Inbox</a></li>
+                <li><a href="{% url 'messages_outbox' %} ">Sent Messages</a></li>
+                <li><a href="{% url 'messages_compose' %} ">New Message</a></li>
+                <li><a href="{% url 'messages_trash' %} ">Trash</a></li>
+                <li><a href='{% url 'addPresc' %}'>Patient Prescriptions</a><br/></li>
+                <li><a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/></li>
+                <li><a href='{% url 'testUploader' %}'>Upload Test Results</a><br/></li>
+                <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+                <li><a href='{% url 'notes' %}'>Add Medical Notes</a><br/></li>
+                <li><a href='{% url 'viewNotes' %}'>View Medical Notes</a><br/></li>
+                <li><a href='{% url 'admit_patient' %}'>Admit Patient</a><br/></li>
+                <li><a href='{% url 'discharge_patient' %}'>Discharge Patient</a><br/></li>
+                <li><a href='{% url 'requestTransfer' %}'>Request Patient Transfer</a><br/></li>
+                <li><a href='{% url 'acceptTransfer' %}'>Accept Pending Transfers</a><br/></li>
+            </ul>
+        {% elif is_assist %}
+            <ul>
+                <li><a href="{% url 'messages_inbox' %} ">Inbox</a></li>
+                <li><a href="{% url 'messages_outbox' %} ">Sent Messages</a></li>
+                <li><a href="{% url 'messages_compose' %} ">New Message</a></li>
+                <li><a href="{% url 'messages_trash' %} ">Trash</a></li>
+                <li><a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/></li>
+                <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+                <li><a href='{% url 'admit_patient' %}'>Admit Patient</a><br/></li>
+            </ul>
+        {% elif is_admin %}
+            <ul>
+                <li><a href="{% url 'messages_inbox' %} ">Inbox</a></li>
+                <li><a href="{% url 'messages_outbox' %} ">Sent Messages</a></li>
+                <li><a href="{% url 'messages_compose' %} ">New Message</a></li>
+                <li><a href="{% url 'messages_trash' %} ">Trash</a></li>
+                <li><a href='{% url 'doc_register' %}'>Add Doctor User</a><br/></li>
+                <li><a href='{% url 'assistant_register' %}'>Add Assistant User</a><br/></li>
+                <li><a href='{% url 'admin_register' %}'>Add Administrator User</a><br/></li>
+                <li><a href='{% url 'requestTransfer' %}'>Request Patient Transfer</a><br/></li>
+                <li><a href='{% url 'acceptTransfer' %}'>Accept Pending Transfers</a><br/></li>
+                <li><a href='{% url 'viewLog' %}'>View Activity Log</a><br/></li>
+            </ul>
+        {% else %}
+            <ul>
+                <li><a href="{% url 'messages_inbox' %} ">Inbox</a></li>
+                <li><a href="{% url 'messages_outbox' %} ">Sent Messages</a></li>
+                <li><a href="{% url 'messages_compose' %} ">New Message</a></li>
+                <li><a href="{% url 'messages_trash' %} ">Trash</a></li>
+                <li><a href='{% url 'patient_medical_info' %}'>Medical History</a><br/></li>
+                <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+                <li><a href='{% url 'confirm_export' %}'>Import/Export profile(s)</a><br/></li>
+            </ul>
+        {% endif %}
+    </div>
+    <div id='' class='main'>
+        <div class="tabs">
+            <div class="tab">
+                <input type="radio" name="tabgroup" id="tab-1" checked>
+                <label for="tab-1">Prescriptions</label>
+                <div class="content">
+                    {% for prescription in prescriptions %}
+                        <div style="width: 100%">
+                            <li class="presc" style="float: left">Patient : {{ prescription.patient_name }} Drug
+                                : {{ prescription.drug_name }} Dosage :
+                                {{ prescription.dosage }} Reason : {{ prescription.reason }}
+                                {% if is_doctor %}
+                                    <a href="{% url 'delPresc' slug=prescription.id %}" style="width: 10%;"
+                                       class="delete">Delete</a>
+                                {% endif %}
+                            </li>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab">
+                <input type="radio" name="tabgroup" id="tab-3">
+                <label for="tab-3">Test Results</label>
+                <div class="content">
+                    {% for result in test_results %}
+                        <a href="#{{ result.id }}">
+                            <img src='{{ result.document.url }}' class="thumbnail">
+                            {{ file.description }}<br/>
+                        </a>
+                        <a href="#" class="lightbox" id="{{ result.id }}">
+                            <img src="{{ result.document.url }}"><br/>
+                        </a>
+                        {% if result.is_released == False %}
+                            {% if is_doctor %}
+                                <a href="{% url 'updateTest' slug=result.id %}" style="width: 10%;" class="delete">Release</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h1>Welcome to HealthNet </h1>
+{% endif %}
+</body>
+</html>

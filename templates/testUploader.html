@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Welcome to HealthNet</title>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+        {% if not is_doctor and not is_assist and not is_admin %}
+            <li class='update'><a href="{% url 'updatePatient' %}">{{ "Update Info" }}</a></li>
+        {% endif %}
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <div id='' class='main'>
+    {% block content %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    {% endblock %}
+    </div>
+{% else %}
+    <h1>Welcome to HealthNet </h1>
+{% endif %}
+{% if user.is_authenticated %}
+
+{% else %}
+    <a href="{% url 'pat_register' %}">{{ "Register Here" }}</a>
+{% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

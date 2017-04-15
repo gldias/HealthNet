@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Prescriptions</title>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "index" %}">Home</a></li>
+
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+<div id='menu'>
+    {% if is_doctor %}
+        <ul>
+            <li><a href='{% url 'addPresc' %}'>Patient Prescriptions</a><br/></li>
+            <li><a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/></li>
+            <li><a href='{% url 'testUploader' %}'>Upload Test Results</a><br/></li>
+            <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+            <li><a href='{% url 'notes' %}'>Add Medical Notes</a><br/></li>
+            <li><a href='{% url 'admit_patient' %}'>Admit Patient</a><br/></li>
+            <li><a href='{% url 'discharge_patient' %}'>Discharge Patient</a><br/></li>
+        </ul>
+    {% elif is_assist %}
+        <ul>
+            <li><a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/></li>
+            <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+            <li><a href='{% url 'admit_patient' %}'>Admit Patient</a><br/></li>
+        </ul>
+    {% elif is_admin %}
+        <ul>
+            <li><a href='{% url 'doc_register' %}'>Add Doctor User</a><br/></li>
+            <li><a href='{% url 'assistant_register' %}'>Add Assistant User</a><br/></li>
+            <li><a href='{% url 'admin_register' %}'>Add Administrator User</a><br/></li>
+            <li><a href='{% url 'placeholder' %}'>Patient Transfers</a><br/></li>
+            <li><a href='{% url 'viewLog' %}'>View Activity Log</a><br/></li>
+        </ul>
+    {% else %}
+        <ul>
+            <li><a href='{% url 'patient_medical_info' %}'>Medical History</a><br/></li>
+            <li><a href='{% url 'newAppt' %}'>Create Appointment</a><br/></li>
+        </ul>
+    {% endif %}
+</div>
+<div class='main'>
+    {% if prescription_created %}
+        <strong> Prescription Created!</strong>
+        <a href="{% url 'index' %}">Return to Index.</a><br/>
+    {% else %}
+        <br/>
+        <strong>Create a Prescription</strong><br/>
+
+        <form id="appointment_form" method="post" action="{% url 'addPresc' %}">
+
+            {% csrf_token %}
+
+            <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+            {{ prescription_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Create"/>
+            <button type="button" onclick="window.location.href='{% url 'index' %}'">Cancel</button>
+        </form>
+    {% endif %}
+</div>
+</body>
+</html>

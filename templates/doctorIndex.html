@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "/static/styles.css" %}"/>
+    <link rel='stylesheet' href="{% static "/static/fullcalendar/fullcalendar.css" %}"/>
+    <script src="{% static "/static/fullcalendar/lib/jquery.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "/static/fullcalendar/fullcalendar.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>Welcome to HealthNet</title>
+    <script>
+        $(document).ready(function () {
+            // page is now ready, initialize the calendar...
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listWeek'
+                },
+                editable: 'true',
+                clickable: 'true',
+                eventLimit: 'true',
+                events: '{%  url "docFeed" %}',
+
+                eventClick: function(calEvent) {
+                    window.open("http://127.0.0.1:8000/healthNet/updateApp/" + calEvent.id + "/");
+                    $(this).css('border-color', 'red');
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+<image src="{% static "/static/header.jpg" %}" width=100% height=auto></image>
+<ul>
+    <li><a href="{% url "doctorIndex" %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li class='logout'><a href="{% url 'logout' %}">{{ "Logout" }}</a></li>
+    {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated %}
+    <h1>Welcome to HealthNet, Dr. {{ user.username }}</h1>
+    <div id='menu'>
+        <br/>
+        <a href="{% url 'index' %}">Calendar</a> <br/>
+        <a href='{% url 'addPresc' %}'>Patient Prescriptions</a><br/>
+        <a href='{% url 'staff_patient_medical_info' %}'>Patient Medical Information</a><br/>
+        <a href='{% url 'testUploader' %}'>Upload Test Results</a><br/>
+        <a href='{% url 'newAppt' %}'>Create Appointment</a><br/>
+        <a href='{% url 'notes' %}'>Add Medical Notes</a><br/>
+        <a href='{% url 'viewNotes' %}'>View Medical Notes</a><br/>
+        <a href='{% url 'admit_patient' %}'>Admit Patient</a><br/>
+        <a href='{% url 'discharge_patient' %}'>Discharge Patient</a><br/>
+        <a href='{% url 'requestTransfer' %}'>Request Patient Transfer</a><br/>
+        <a href='{% url 'acceptTransfer' %}'>Accept Pending Transfers</a><br/>
+    </div>
+    <div id='calendar' class='main'></div>
+{% else %}
+    <h1>Welcome to HealthNet </h1>
+{% endif %}
+{% if user.is_authenticated %}
+
+{% else %}
+    <a href="{% url 'register' %}">{{ "Register Here" }}</a>
+    <a href="{% url 'login' %}">{{ "Login" }}</a>
+{% endif %}
+</body>
+</html>
